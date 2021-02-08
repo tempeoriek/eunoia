@@ -1,0 +1,137 @@
+﻿@model CategoryNavigationModel
+@using Nop.Web.Models.Catalog;
+
+
+
+@functions{
+    public bool BreadCrumbContainsCurrentCategoryId(CategorySimpleModel category)
+    {
+        if (Model.CurrentCategoryId == 0)
+            return false;
+
+        if (category.Id == Model.CurrentCategoryId)
+            return true;
+
+        foreach (var subCategory in category.SubCategories)
+        {
+            if (BreadCrumbContainsCurrentCategoryId(subCategory))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+@helper RenderCategoryLineSidebar(CategorySimpleModel category)
+{
+    bool active = category.Id == Model.CurrentCategoryId || category.SubCategories.Count(BreadCrumbContainsCurrentCategoryId) > 0;
+    bool last = category.Id == Model.CurrentCategoryId;
+    string liClass = active ? "active" : "inactive";
+
+    if (last)
+    {
+        liClass += " last";
+    }
+
+    <li class="listItemB"><a href="@Url.RouteUrl("Category", new { SeName = category.SeName })" class="@liClass"> <img alt="icon" src="~/Content/Images/dot menu.png"> @category.Name</a></li>
+
+    if (category.Id == Model.CurrentCategoryId ||
+        category.SubCategories.Count(BreadCrumbContainsCurrentCategoryId) > 0)
+    {
+        if (category.SubCategories.Count > 0)
+        {
+            <ul class="sublist">
+                @foreach (var subCategory in category.SubCategories)
+                {
+                    @RenderCategoryLine(subCategory)
+                }
+            </ul>
+        }
+    }
+}
+
+
+@*untuk yang category shop*@
+@helper RenderCategoryLine(CategorySimpleModel category)
+{
+    bool active = category.Id == Model.CurrentCategoryId || category.SubCategories.Count(BreadCrumbContainsCurrentCategoryId) > 0;
+    bool last = category.Id == Model.CurrentCategoryId;
+    string liClass = active ? "active" : "inactive";
+
+    if (last)
+    {
+        liClass += " last";
+    }
+
+    <a href="@Url.RouteUrl("Category", new { SeName = category.SeName })" class="@liClass dropdown-item"> @category.Name</a>
+}
+
+@*untuk yang category collection*@
+@helper RenderCategoryLineCollection(CategorySimpleModel category)
+{
+    bool active = category.Id == Model.CurrentCategoryId || category.SubCategories.Count(BreadCrumbContainsCurrentCategoryId) > 0;
+    bool last = category.Id == Model.CurrentCategoryId;
+    string liClass = active ? "active" : "inactive";
+
+    if (last)
+    {
+        liClass += " last";
+    }
+
+    <a href="@Url.RouteUrl("Category", new { SeName = category.SeName })" class="@liClass dropdown-item"> @category.Name</a>
+}
+
+@helper RenderCategoryMobile(CategorySimpleModel category)
+{
+    bool active = category.Id == Model.CurrentCategoryId || category.SubCategories.Count(BreadCrumbContainsCurrentCategoryId) > 0;
+    bool last = category.Id == Model.CurrentCategoryId;
+    string liClass = active ? "active" : "inactive";
+
+    if (last)
+    {
+        liClass += " last";
+    }
+    <li><a href="@Url.RouteUrl("Category", new { SeName = category.SeName })">@category.Name</a></li>
+
+}
+
+@helper RenderCategoryMobileCollection(CategorySimpleModel category)
+{
+    bool active = category.Id == Model.CurrentCategoryId || category.SubCategories.Count(BreadCrumbContainsCurrentCategoryId) > 0;
+    bool last = category.Id == Model.CurrentCategoryId;
+    string liClass = active ? "active" : "inactive";
+
+    if (last)
+    {
+        liClass += " last";
+    }
+    <li><a href="@Url.RouteUrl("Category", new { SeName = category.SeName })">@category.Name</a></li>
+}
+
+
+@{
+    var liCollapse = (Model.CurrentCategoryId > 0) ? "" : "collapse";
+    var parentId = (ViewBag.isMobile != null) ? "phmenu-mobile" : "phmenu";
+    var divId = (ViewBag.isMobile != null) ? "shop-mobile" : "shop";
+
+}
+
+
+@*Mobile Version*@
+<div class="d-block d-md-none" style="margin-top:10vh;">
+    @foreach (var category in Model.Categories)
+    {
+        <div class="dropright dropright-list">
+            <a href="#" class="menu-right-mobile" data-toggle="collapse" data-target="#collapse-@category.SeName" aria-expanded="false" aria-controls="collapse-@category.SeName">@category.Name</a>
+            <div class="collapse c-@category.SeName" id="collapse-@category.SeName" style="list-style:none;">
+
+                @foreach (var subcat in category.SubCategories)
+                {
+                    @RenderCategoryMobile(subcat)
+                }
+
+            </div>
+        </div>}
+</div>

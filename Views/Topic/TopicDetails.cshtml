@@ -1,0 +1,62 @@
+﻿@model TopicModel
+@using Nop.Core.Domain.Seo
+@using Nop.Core.Infrastructure
+@using Nop.Web.Models.Topics;
+@{
+    var isPopup = ViewBag.IsPopup;
+    if (isPopup == null || isPopup == false)
+    {
+        
+    }
+    else
+    {
+        /*pop-up windows*/
+        Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+    }
+
+    if (!Model.IsPasswordProtected)
+    {
+        Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Title);
+        Html.AddMetaDescriptionParts(Model.MetaDescription);
+        Html.AddMetaKeywordParts(Model.MetaKeywords);
+    }
+
+    var canonicalUrlsEnabled = EngineContext.Current.Resolve<SeoSettings>().CanonicalUrlsEnabled;
+    if (canonicalUrlsEnabled)
+    {
+        var topicUrl = Url.RouteUrl("Topic", new { SeName = Model.SeName }, this.Request.Url.Scheme);
+        Html.AddCanonicalUrlParts(topicUrl);
+    }
+   
+}
+
+
+
+<div class="container">
+    <div class="row">
+        @if (!String.IsNullOrEmpty(Model.Title))
+        {
+        <div class="col-12 text-center d-none d-md-block" style="margin-bottom:-200px;margin-top:150px;z-index:10;">
+            <h1>@Model.Title</h1>
+        </div>
+        }
+
+    </div>
+    <div class="row d-flex justify-content-center m-4">
+        <div class="col-12 col-md-6 text-left mt-0 pt-0 mt-md-5 pt-md-5">
+            <img src="~/content/images/about.png" class="img-fluid w-100 pr-0 pr-md-4"/>
+        </div>
+        <div class="col-12 col-md-6 mt-0 mt-md-5 pt-5">
+            @if (!String.IsNullOrEmpty(Model.Title))
+            {
+            <div class="d-block d-md-none"><h1>@Model.Title</h1></div>
+            }
+                <div class="pl-md-4 pl-0 about-desc" style="">@Html.Raw(Model.Body)</div>
+            </div>
+    </div>
+</div>
+
+
+
+ 
+    

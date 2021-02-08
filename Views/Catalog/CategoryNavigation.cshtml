@@ -1,0 +1,240 @@
+﻿@model CategoryNavigationModel
+@using Nop.Web.Models.Catalog;
+
+
+@*<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>*@
+@*<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>*@
+
+@functions{
+    public bool BreadCrumbContainsCurrentCategoryId(CategorySimpleModel category)
+    {
+        if (Model.CurrentCategoryId == 0)
+            return false;
+
+        if (category.Id == Model.CurrentCategoryId)
+            return true;
+
+        foreach (var subCategory in category.SubCategories)
+        {
+            if (BreadCrumbContainsCurrentCategoryId(subCategory))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+@helper RenderCategoryLineSidebar(CategorySimpleModel category)
+{
+    bool active = category.Id == Model.CurrentCategoryId || category.SubCategories.Count(BreadCrumbContainsCurrentCategoryId) > 0;
+    bool last = category.Id == Model.CurrentCategoryId;
+    string liClass = active ? "active" : "inactive";
+
+    if (last)
+    {
+        liClass += " last";
+    }
+
+    <li class="listItemB"><a href="@Url.RouteUrl("Category", new { SeName = category.SeName })" class="@liClass"> <img alt="icon" src="~/Content/Images/dot menu.png"> @category.Name</a></li>
+
+    if (category.Id == Model.CurrentCategoryId ||
+        category.SubCategories.Count(BreadCrumbContainsCurrentCategoryId) > 0)
+    {
+        if (category.SubCategories.Count > 0)
+        {
+            <ul class="sublist">
+                @foreach (var subCategory in category.SubCategories)
+                {
+                    @RenderCategoryLine(subCategory)
+                }
+            </ul>
+        }
+    }
+}
+
+
+@*untuk yang category shop*@
+@helper RenderCategoryLine(CategorySimpleModel category)
+{
+    bool active = category.Id == Model.CurrentCategoryId || category.SubCategories.Count(BreadCrumbContainsCurrentCategoryId) > 0;
+    bool last = category.Id == Model.CurrentCategoryId;
+    string liClass = active ? "active" : "inactive";
+
+    if (last)
+    {
+        liClass += " last";
+    }
+
+    <a href="@Url.RouteUrl("Category", new { SeName = category.SeName })" class="@liClass dropdown-item"> @category.Name</a>
+}
+
+@*untuk yang category collection*@
+@helper RenderCategoryLineCollection(CategorySimpleModel category)
+{
+    bool active = category.Id == Model.CurrentCategoryId || category.SubCategories.Count(BreadCrumbContainsCurrentCategoryId) > 0;
+    bool last = category.Id == Model.CurrentCategoryId;
+    string liClass = active ? "active" : "inactive";
+
+    if (last)
+    {
+        liClass += " last";
+    }
+
+    <a href="@Url.RouteUrl("Category", new { SeName = category.SeName })" class="@liClass dropdown-item"> @category.Name</a>
+}
+
+
+@helper RenderCategoryMobile(CategorySimpleModel category)
+{
+    bool active = category.Id == Model.CurrentCategoryId || category.SubCategories.Count(BreadCrumbContainsCurrentCategoryId) > 0;
+    bool last = category.Id == Model.CurrentCategoryId;
+    string liClass = active ? "active" : "inactive";
+
+    if (last)
+    {
+        liClass += " last";
+    }
+    <li><a href="@Url.RouteUrl("Category", new { SeName = category.SeName })">@category.Name</a></li>
+
+}
+
+@helper RenderCategoryMobileCollection(CategorySimpleModel category)
+{
+    bool active = category.Id == Model.CurrentCategoryId || category.SubCategories.Count(BreadCrumbContainsCurrentCategoryId) > 0;
+    bool last = category.Id == Model.CurrentCategoryId;
+    string liClass = active ? "active" : "inactive";
+
+    if (last)
+    {
+        liClass += " last";
+    }
+    <li><a href="@Url.RouteUrl("Category", new { SeName = category.SeName })">@category.Name</a></li>
+}
+
+
+@{
+    var liCollapse = (Model.CurrentCategoryId > 0) ? "" : "collapse";
+    var parentId = (ViewBag.isMobile != null) ? "phmenu-mobile" : "phmenu";
+    var divId = (ViewBag.isMobile != null) ? "shop-mobile" : "shop";
+
+}
+
+
+@*desktop - mousover type*@
+@{
+    var issidebar = (ViewBag.isSidebar == null) ? false : Convert.ToBoolean(ViewBag.isSidebar);
+
+    if (!issidebar)
+    {
+        if (Model.Categories.Count > 0)
+        {
+            foreach (var category in Model.Categories)
+            {
+                if (category.SubCategories.Any())
+                {
+
+                    <div class="dropdown">
+                        <a class=" category-item" href="#" role="button" id="dropdownMenuLink-@category.Id" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@category.Name</a>
+                        <div class="dropdown-menu dropdown_subcat" aria-labelledby="dropdownMenuLink-@category.Id">
+                            @foreach (var subcat in category.SubCategories)
+                            {
+                                <a class="subcat-item" href="@Url.RouteUrl("Category", new { SeName = subcat.SeName })">@subcat.Name</a>
+                            }
+                        </div>
+                        @*<span class="mr-5"><a class="nav-top link-db" href="@Url.RouteUrl("Category", new { SeName = category.SeName })">@category.Name</a></span>
+                            @*<div class="dropdown-bar w-100 c-@category.Name">
+                                <div class="dropdown-bar-content d-flex flex-column">
+                                    <div class="d-flex flex-column submenu sub-@category.Name ">
+                                        <div class="d-flex justify-content-start flex-column">
+                                                @{
+                                                    for (int i = 0; i < category.SubCategories.Count; i++)
+                                                    {
+                                                        var subcat = category.SubCategories[i];
+                                                        <div class="mr-3 ml-3 mb-3"><a href="@Url.RouteUrl("Category", new { SeName = subcat.SeName })" data-target="#tab-@i" data-hover="tab">@subcat.Name</a></div>
+                                                    }
+                                                }
+                                        </div>
+
+                                        <div class="d-flex justify-content-start">
+                                            <div class="tab-content well">
+                                                @{
+                                                    int counter = 0;
+                                                    string cssActive;
+                                                    foreach (var subsubcat in category.SubCategories)
+                                                    {
+                                                        cssActive = "";
+                                                        if (subsubcat.SubCategories.Any())
+                                                        {
+                                                            if (counter == 0)
+                                                            {
+                                                                cssActive = "active";
+                                                            }
+
+                                                            @RenderSubCategory(counter, cssActive, subsubcat)
+                                                        }
+
+                                                        counter++;
+                                                    }
+                                                }
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>*@
+                    </div>
+
+                }
+                else
+                {
+                    <div><a class="category-item" href="@Url.RouteUrl("Category", new { SeName = category.SeName })">@category.Name.ToUpper()</a></div>
+                }
+            }
+
+
+
+
+        }
+
+    }
+    else
+    {
+        
+
+    }
+}
+
+
+
+
+
+@helper RenderSubCategory(int id, string cssActive, CategorySimpleModel item)
+{
+
+    <div class="tab-pane @cssActive" id="tab-@id">
+        <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="pills-a">
+            <div class="row" style="z-index:-1">
+                <div class="col-6 order-12  subitem-link" style=""></div>
+                <div class="col-6  order-1 img-subcat" style=""><img src="@item.PictureModel.ImageUrl" style="border:7px solid #99282C;width:250px;height:250px;box-sizing:border-box;" class="img-fluid" /><div class=""></div></div>
+            </div>
+            @*<div class="col-6 justify-content-end img-subcat" style="position:fixed;top:140px;right:291px;"><img src="@item.PictureModel.ImageUrl" style="border:7px solid #99282C;width:250px;height:250px;box-sizing:border-box;" class="img-fluid" /></div>*@
+            @if (item.SubCategories.Any())
+            {
+                foreach (var subItem in item.SubCategories)
+                {
+
+                    <div class="row subitem-menu mt-5" style="margin-top:-5px;">
+                        <div class="col-6 order-12 subitem-link d-flex flex-column" style=""><a href="@Url.RouteUrl("Category", new { SeName = subItem.SeName })" class="">@subItem.Name</a></div>
+                        <div class="col-6 order-1 img-subitem ">@*<img src="@subItem.PictureModel.ImageUrl" style="border:7px solid #99282C;width: 250px;height : 250px; box-sizing: border-box;" class="img-fluid " />*@</div>
+                    </div>
+                }
+            }
+            @*</div>*@
+        </div>
+    </div>
+
+}

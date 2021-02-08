@@ -1,0 +1,120 @@
+﻿@model FooterModel
+@using Nop.Core
+@using Nop.Core.Domain.Tax
+@using Nop.Core.Infrastructure
+@using Nop.Web.Models.Common;
+
+
+<footer data-section-name="footer">
+  <div class="container" style="border-top: 1px solid grey;">
+      @*<div class="row mt-2 mt-md-4 mb-5">
+        <div class="col-12 d-flex flex-column align-items-center">
+          <div class="newsletter">
+            <h3 class="text-center text-md-right mb-4" style="color:#707070;">SUSCRIBE TO THE NEWSLETTER</h3>
+            <div id="nieuwsbrief">
+              <form action="" method="post" id="mc-embedded-subscribe-form"
+                  name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+                <div class="form-group d-flex justify-content-center mb-4 mb-md-0" style="vertical-align:top;">
+                  <input id="mce-EMAIL" class="email form-footer" type="email" style="" name="EMAIL" placeholder="Enter e-mail" value="" required="required" />
+                  <button id="mc-embedded-subscribe" type="submit" name="subscribe" value=""><img src="~/Themes/v1/Content/images/arrow.png" /></button>
+                  <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_0713301c8224b9979b17bdd9b_0e2ea9797e" id="b_0713301c8224b9979b17bdd9b_0e2ea9797e" tabindex="-1" value=""></div>
+                </div>
+              </form>
+              <script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
+              <script type='text/javascript'>(function ($) { window.fnames = new Array(); window.ftypes = new Array(); fnames[0] = 'EMAIL'; ftypes[0] = 'email'; fnames[1] = 'FNAME'; ftypes[1] = 'text'; fnames[2] = 'LNAME'; ftypes[2] = 'text'; }(jQuery)); var $mcj = jQuery.noConflict(true);</script>
+            </div>
+            <div id="nieuwsbrief-msg" style="display:none;">
+              Thank you for subscribing!
+            </div>
+          </div>
+
+
+
+
+
+        </div>
+      </div>*@
+
+      <div class="row m-1 mt-3">
+        <div class="col-1 d-none d-md-block"></div>
+
+        <div class="col-12 col-md-1">
+          <div class="d-flex flex-column lnk-footer">
+            <a href="#"><b>Eunoia</b></a>
+            @foreach (var topic in Model.Topics.Where(x => x.IncludeInFooterColumn1).ToList())
+            {
+              <a  href="@Url.RouteUrl("Topic", new { SeName = topic.SeName })">@topic.Name</a>
+            }
+          </div>
+        </div>
+        
+        <div class="col-12 col-md-2">
+          <div class="d-flex flex-column lnk-footer">
+            <a href="#"><b>Customer service</b></a>
+            @foreach (var topic in Model.Topics.Where(x => x.IncludeInFooterColumn2).ToList())
+            {
+              <a href="@Url.RouteUrl("Topic", new { SeName = topic.SeName })">@topic.Name</a>
+            }
+          </div>
+        </div>
+
+        <div class="col-12 col-md-1">
+          <div class="d-flex flex-column lnk-footer">
+            <a href="#"><b>Stay with us</b></a>
+            <a href="//www.instagram.com/eunoia_ig">Instagram</a>
+          </div>
+        </div>
+
+        @*<div class="col-12 col-md-2">
+          <div class="d-flex justify-content-start justify-content-md-end social ">
+            <a href="//www.instagram.com/thabs"><img src="~/Themes/v1/Content/images/Instagram.png" /></a>
+            <a href="#"><img class="ml-3" src="~/Themes/v1/Content/images/wa.png" /></a>
+          </div>
+        </div>*@
+
+        <div class="col-3 d-none d-md-block"></div>
+
+        <div class="col-12 col-md-3">
+          <div class="d-flex flex-column lnk-footer">
+            <div class="newsletter mt-1">
+              <div id="nieuwsbrief">
+                <form action="" method="post" id="mc-embedded-subscribe-form"
+                    name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+                  <div class="form-group d-flex justify-content-center mb-4 mb-md-0" style="vertical-align:top;">
+                    <input id="mce-EMAIL" class="email form-footer" type="email" style="" name="EMAIL" placeholder="Enter your e-mail to subscribe to our newsletter" value="" required="required" />
+                    <button id="mc-embedded-subscribe" type="submit" name="subscribe" value=""><img style="width: 75%;" src="~/Themes/v1/Content/images/arrow.png" /></button>
+                    <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_0713301c8224b9979b17bdd9b_0e2ea9797e" id="b_0713301c8224b9979b17bdd9b_0e2ea9797e" tabindex="-1" value=""></div>
+                  </div>
+                </form>
+                <script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
+                <script type='text/javascript'>(function ($) { window.fnames = new Array(); window.ftypes = new Array(); fnames[0] = 'EMAIL'; ftypes[0] = 'email'; fnames[1] = 'FNAME'; ftypes[1] = 'text'; fnames[2] = 'LNAME'; ftypes[2] = 'text'; }(jQuery)); var $mcj = jQuery.noConflict(true);</script>
+              </div>
+              <div id="nieuwsbrief-msg" style="display:none;">
+                Thank you for subscribing!
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-8 d-none d-md-block"></div>
+        <div class="col-12 col-md-3 d-flex justify-content-center justify-content-md-end">
+          <p class="copyright-text" style="margin-right: 15px;">
+            &#9400; Eunoia
+            <script>document.write(new Date().getFullYear())</script>. site by <a href="http://flitts.com" target="_blank">flitts</a>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+   
+
+<script>
+  $("#mc-embedded-subscribe").click(function () {
+    $("#nieuwsbrief").css("display", "none");
+    $("#nieuwsbrief-msg").css("display", "block");
+  });
+</script>
+

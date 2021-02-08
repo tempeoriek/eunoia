@@ -1,0 +1,138 @@
+﻿@model ProductOverviewModel
+@using Nop.Core
+@using Nop.Core.Domain.Orders
+@using Nop.Core.Domain.Tax
+@using Nop.Core.Infrastructure
+@using Nop.Web.Extensions
+@using Nop.Web.Models.Catalog;
+
+@helper Text_Truncate(string input, int length)
+{
+	if (input.Length <= length)
+	{
+		@Html.Raw(@input)
+	}
+	else
+	{
+		@Html.Raw(@input.Substring(0, length))<text>...</text>
+	}
+}
+
+
+@helper Price_Modifier(string input, int length)
+{
+	if (input.Length <= length)
+	{
+		@Html.Raw(@input)
+	}
+	else
+	{
+		@Html.Raw(@input.Substring(0, length))<text>...</text>
+	}
+}
+
+@{
+	//prepare "Add to cart" AJAX link
+	string addtocartlink = "";
+	var shoppingCartTypeId = (int)ShoppingCartType.ShoppingCart;
+	var quantity = 1;
+	if (Model.ProductPrice.ForceRedirectionAfterAddingToCart)
+	{
+		addtocartlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = Model.Id, shoppingCartTypeId = shoppingCartTypeId, quantity = quantity, forceredirection = Model.ProductPrice.ForceRedirectionAfterAddingToCart });
+	}
+	else
+	{
+		addtocartlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = Model.Id, shoppingCartTypeId = shoppingCartTypeId, quantity = quantity, });
+	}
+}
+
+
+<div class="product-item">
+	<div>
+
+		@if(Model.Quantity > 0)
+		{
+			<a href="@Url.RouteUrl("Product", new { SeName = Model.SeName})" class="clean">
+				<img src="@Model.DefaultPictureModel.ImageUrl" class="img-fluid center-block" />
+			</a>
+		}
+		else
+		{
+			<a href="@Url.RouteUrl("Product", new { SeName = Model.SeName})" class="clean">
+				<div class="image__blur">
+					<img class="img-fluid center-block" src="@Model.DefaultPictureModel.ImageUrl" />
+				</div>
+			</a>
+		}
+	</div>
+  
+	<div>
+		<p style="float: left; text-align: left;">
+			<a href="@Url.RouteUrl("Product", new { SeName = Model.SeName})">@Html.DisplayFor(m => m.Name)</a>
+			<br>
+			<a href="@Url.RouteUrl("Product", new { SeName = Model.SeName})" style="font-weight: bold; margin-right: 18px;">S</a>
+			<a href="@Url.RouteUrl("Product", new { SeName = Model.SeName})" style="font-weight: bold; margin-right: 18px;">M</a>
+			<a href="@Url.RouteUrl("Product", new { SeName = Model.SeName})" style="font-weight: bold; margin-right: 18px;">L</a>
+		</p>
+		<p style="float: right;">
+			@if (!String.IsNullOrEmpty(Model.ProductPrice.OldPrice) || Model.ProductPrice.DisplayTaxShippingInfo){
+				if (!String.IsNullOrEmpty(Model.ProductPrice.OldPrice)){
+					<span style="color:#965226; text-decoration:line-through; margin-right: 15px;">
+						<span style="color:#969696">
+							@Model.ProductPrice.OldPrice
+						</span>
+					</span>
+				}
+
+				@Model.ProductPrice.Price
+			}
+			else
+			{
+				@Model.ProductPrice.Price
+			}
+		</p>
+	</div>
+
+	<br>
+	
+	@* <div class="row">
+		<div class="col-6 col-md-6" style="    justify-content: end; align-items: center; display: flex;">
+			<div class="row">
+					<div class="col-12 text-left">
+						<span><a href="@Url.RouteUrl("Product", new { SeName = Model.SeName})">@Html.DisplayFor(m => m.Name)</a></span>
+					</div>
+					<div class="col-12 text-left">
+						<span><a href="@Url.RouteUrl("Product", new { SeName = Model.SeName})">@Html.DisplayFor(m => m.Name)</a></span>
+					</div>
+			</div>
+		</div>
+
+		<div class="col-6 col-md-6">
+			<div class="row">
+				@if (!String.IsNullOrEmpty(Model.ProductPrice.OldPrice) || Model.ProductPrice.DisplayTaxShippingInfo){
+					<div class="col-12 text-right">
+						@if (!String.IsNullOrEmpty(Model.ProductPrice.OldPrice)){
+							<span style="color:#965226;text-decoration:line-through;">
+								<span style="color:#969696">
+									@Model.ProductPrice.OldPrice
+								</span>
+							</span>
+						}
+					</div>
+					
+					<div class="col-12 text-right">
+						@Model.ProductPrice.Price
+					</div>
+				}
+				else
+				{
+					<div class="col-12 text-right">
+						@Model.ProductPrice.Price
+					</div>
+				}
+			</div>
+		</div>
+	</div> *@
+   
+
+</div>
