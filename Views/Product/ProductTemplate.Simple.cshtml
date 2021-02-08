@@ -59,11 +59,11 @@
 
       @using (Html.BeginRouteForm("Product", new { SeName = Model.SeName }, FormMethod.Post, new { id = "product-details-form" }))
       {
-        <div class="row" style="height: 30px; border-bottom: 1px solid;" style itemscope itemtype="http://schema.org/Product" data-productid="@Model.Id">
+        <div class="row" style="border-bottom: 1px solid;" style itemscope itemtype="http://schema.org/Product" data-productid="@Model.Id">
           <div class="col-6 col-md-6 text-left" style="padding: 0; margin: 0;">
             <h1 itemprop="name">@Model.Name</h1>
           </div>
-          <div class="col-6 col-md-6 text-right" style="padding: 0; margin: 0;">
+          <div class="col-6 col-md-6 text-right" style="padding: 0; margin: 0; display: flex; justify-content: flex-end; align-items: center;">
             @{
               var dataDictPrice = new ViewDataDictionary();
               dataDictPrice.TemplateInfo.HtmlFieldPrefix = string.Format("price_{0}", Model.Id);
@@ -71,12 +71,46 @@
             }
           </div>
         </div>
-        <div class="row">
-          <div class="description  pt-5 pb-2 col-12 col-md-8">
-            @Html.Raw(Model.FullDescription)
+
+        @* <div>
+          <div class="row nav nav-tabs pt-4" role="tablist">
+            <div class="col-6 col-md-4 product-desc active text-left p-0" role="presentation">
+              <a href="#description" aria-controls="description" role="tab" data-toggle="tab">DESCRIPTION</a>
+            </div>
+            <div class="col-6 product-desc col-md-4 text-left p-0" role="presentation">
+              <a href="#instruction" aria-controls="instruction" role="tab" data-toggle="tab">INSTRUCTION</a>
+            </div>
           </div>
+
+          <div class="row tab-content">
+            <div class="tab-pane pt-5 pb-2 col-12 col-md-8 active" style="padding: 0;" role="tabpanel" id="description">
+              @Html.Raw(Model.FullDescription)
+            </div>
+            <div class="tab-pane pt-5 pb-2 col-12 col-md-8" style="padding: 0;" role="tabpanel" id="instruction">
+              @Html.Raw(Model.ShortDescription)
+            </div>
+          </div>
+        </div> *@
+        <div class="pt-4">
+          <!-- Nav tabs -->
+          <div class="row pb-3">
+            <ul class="nav p-0" role="tablist">
+              <li role="presentation" class="active mr-4"><a href="#desc" class="product-desc active show" aria-controls="desc" role="tab" data-toggle="tab">DESCRIPTION</a></li>
+              <li role="presentation"><a href="#instruction" class="product-desc" aria-controls="instruction" role="tab" data-toggle="tab">INSTRUCTION</a></li>
+            </ul>
+          </div>
+
+          <!-- Tab panes -->
+          <div class="row tab-content">
+            <div role="tabpanel" class="tab-pane active" id="desc" style="width: 75%;">
+              @Html.Raw(Model.FullDescription)
+            </div>
+            <div role="tabpanel" class="tab-pane" id="instruction" style="width: 75%;">
+              @Html.Raw(Model.ShortDescription)
+            </div>
+          </div>
+
         </div>
-        
         <br>
       }
    
@@ -165,6 +199,8 @@
         $(".btn-addcart").innerHTML = "ADD TO BAG";
       }
     }
+
+
     console.log("NIH SCRIPT CUK")
     var model = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
     console.log(model);    

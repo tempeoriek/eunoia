@@ -74,6 +74,14 @@
 }
 
 /*Product details*/
+
+.product-desc.active, .product-desc:hover {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+
+
 #add2cart-notification {
     font-size: 0.92rem;
     color: #d04626;
