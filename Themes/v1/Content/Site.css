@@ -1,10 +1,11 @@
 ﻿@font-face {
     font-family: 'gt-america';
     src: 
-        url('../../../fonts/GT AMERICA/gt-america.woff2') format('woff2'), 
-        url('../../../fonts/GT AMERICA/gt-america.woff') format('woff'),
-        url('../../../fonts/GT AMERICA/gt-america.eot') format('embedded-opentype'), 
-        url('../../../fonts/GT AMERICA/gt-america.svg') format('svg');
+        url('../../../fonts/Apercu/Apercu.otf') format('opentype');
+        /* url('../../../fonts/GT AMERICA/gt-america.woff2') format('woff2'),  */
+        /* url('../../../fonts/GT AMERICA/gt-america.woff') format('woff'), */
+        /* url('../../../fonts/GT AMERICA/gt-america.eot') format('embedded-opentype'),  */
+        /* url('../../../fonts/GT AMERICA/gt-america.svg') format('svg'); */
     font-weight:normal;
     font-display:swap;
 }
@@ -12,11 +13,12 @@
 @font-face {
     font-family: 'recoleta';
     src: 
-        url('../../../fonts/Recoleta/recoleta.woff2') format('woff2'), 
-        url('../../../fonts/Recoleta/recoleta.woff') format('woff'),
-        url('../../../fonts/Recoleta/recoleta.eot') format('embedded-opentype'), 
-        url('../../../fonts/Recoleta/recoleta.svg') format('svg'), 
-        url('../../../fonts/Recoleta/recoleta.ttf') format('truetype');
+        url('../../../fonts/Apercu/Apercu.otf') format('opentype');
+        /* url('../../../fonts/Recoleta/recoleta.woff2') format('woff2'),  */
+        /* url('../../../fonts/Recoleta/recoleta.woff') format('woff'), */
+        /* url('../../../fonts/Recoleta/recoleta.eot') format('embedded-opentype'),  */
+        /* url('../../../fonts/Recoleta/recoleta.svg') format('svg'),  */
+        /* url('../../../fonts/Recoleta/recoleta.ttf') format('truetype'); */
     font-display:swap;
 }
 
@@ -587,6 +589,13 @@ footer .social-icon {}
 }
 
  
+.content-hover {
+    display: none;
+}
+.header-img-hover {
+    display: flex;
+    opacity: 0;
+}
 
 .category-item:hover,
 .category-item:active,
@@ -1985,7 +1994,8 @@ a.dropdown-item {
         transition: all ease 0.5s;
         overflow: hidden;
         z-index: 1031;
-        width: 80%;
+        width: 100%;
+        /* width: 80%; */
         max-width: 100%;
         margin-bottom: 0;
         padding: 10px;

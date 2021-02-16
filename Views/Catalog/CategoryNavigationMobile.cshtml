@@ -120,18 +120,23 @@
 
 
 @*Mobile Version*@
-<div class="d-block d-md-none" style="margin-top:10vh;">
+<div class="d-block d-md-none" style="margin-top:3vh;">
     @foreach (var category in Model.Categories)
     {
         <div class="dropright dropright-list">
-            <a href="#" class="menu-right-mobile" data-toggle="collapse" data-target="#collapse-@category.SeName" aria-expanded="false" aria-controls="collapse-@category.SeName">@category.Name</a>
-            <div class="collapse c-@category.SeName" id="collapse-@category.SeName" style="list-style:none;">
+            @if (category.SubCategories.Any()) {
+                <a href="#" class="menu-right-mobile" data-toggle="collapse" data-target="#collapse-@category.SeName" aria-expanded="false" aria-controls="collapse-@category.SeName">@category.Name</a>
+                <div class="collapse c-@category.SeName" id="collapse-@category.SeName" style="list-style:none;">
 
-                @foreach (var subcat in category.SubCategories)
-                {
-                    @RenderCategoryMobile(subcat)
-                }
+                    @foreach (var subcat in category.SubCategories)
+                    {
+                        @RenderCategoryMobile(subcat)
+                    }
 
-            </div>
+                </div>
+            } else {
+                <a href="/@category.SeName" class="menu-right-mobile">@category.Name</a>
+            }
+
         </div>}
 </div>
